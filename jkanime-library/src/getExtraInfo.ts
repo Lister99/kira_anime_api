@@ -21,7 +21,7 @@ interface RootAnime {
   extra: AnimeInfo | null
 }
 
-type ReturnType = Promise<RootAnime | null>
+type ReturnType = Promise<RootAnime>
 
 // Spanish to English lookup table
 const propsToEnglish: Record<string, string> = {
@@ -47,17 +47,8 @@ function buildPromoURL($: cheerio.Root) {
   return `https://youtube.com/watch?${ToolKit.buildQuery({ v: id })}`
 }
 
-async function getExtraInfo(animeSlug: string): ReturnType {
-  const requestOpts = {
-    path: `${config.baseURL}${animeSlug}`,
-    responseType: 'text',
-  }
-
-  const response = await makeRequest(requestOpts.path, requestOpts.responseType as never, { method: 'get' })
-  if (!response)
-    return { extra: null }
-
-  const $ = cheerio.load(response)
+async function getExtraInfo(animeSlug: string, html: string): ReturnType {
+  const $ = cheerio.load(html)
 
   const ul = $('.anime_data ul')
 

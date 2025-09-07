@@ -8,10 +8,19 @@ interface ServerOptions {
   lang: number
 }
 
-function transformURL(servers: ServerOptions[]) {
-  const options = _.map(servers, serverOption =>
-     `https://jkanime.net/c1.php?${ToolKit.buildQuery({ u: serverOption.remote, s: _.toLower(serverOption.server) })}`)
-  return options
+export interface EpisodeServers {
+  server: string;
+  url: string;
+}
+
+function transformURL(servers: ServerOptions[]): EpisodeServers[] {
+  return _.map(servers, serverOption => {
+    const url = `https://jkanime.net/c1.php?${ToolKit.buildQuery({ u: serverOption.remote, s: _.toLower(serverOption.server) })}`.replace('c1.php', 'jkplayer/c1')
+    return {
+      server: serverOption.server,
+      url,
+    }
+  })
 }
 
 async function getRemoteServerOptions(servers: ServerOptions[]) {

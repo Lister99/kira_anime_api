@@ -16,16 +16,8 @@ export interface AnimeBaseInfo {
   }
 }
 
-async function getBaseAnimeInfo(animeSlug: string): Promise<AnimeBaseInfo | null> {
-  const requestOpts = {
-    path: `${config.baseURL}${animeSlug}`,
-    responseType: 'text',
-  }
-  const response = await makeRequest(requestOpts.path, requestOpts.responseType as never, { method: 'get' })
-  if (!response)
-    return null
-
-  const $ = cheerio.load(response)
+async function getBaseAnimeInfo(html:string): Promise<AnimeBaseInfo> {
+  const $ = cheerio.load(html)
   const block = $('.anime_info')
 
   const id = block.find('.guardar_anime').attr('data-anime') ?? ''

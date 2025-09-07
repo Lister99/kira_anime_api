@@ -45,7 +45,9 @@
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "install_device":"run build",
+    "link":"link"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.35",
